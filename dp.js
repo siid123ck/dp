@@ -14,17 +14,29 @@
 //     console.log(result)
 //     return result.length;
 // }
- function longestCommonSubsequence(text1, text2, m=text1.length, n = text2.length, memo={}){
-     let key = m + ""+ n;
-     if(memo[key]) return memo[key]
+ function longestCommonSubsequence(text1, text2, m=text1.length, n = text2.length){
      if(m=== 0 || n===0) return 0;
      if(text2[n-1]===text1[m-1]){
-         memo[key] = 1+longestCommonSubsequence(text1, text2, m-1, n-1, memo);
+         return 1+longestCommonSubsequence(text1, text2, m-1, n-1);
      } else{
-         memo[key] =  Math.max(longestCommonSubsequence(text1, text2, m-1, n, memo), longestCommonSubsequence(text1, text2, m, n-1, memo))
+         return  Math.max(longestCommonSubsequence(text1, text2, m-1, n), longestCommonSubsequence(text1, text2, m, n-1))
      }
-
-     return memo[key]
+ }
+ 
+ 
+ function longestCommonSubsequenceMemo(text1, text2, m=text1.length, n=text2.length){
+  let table = Array(m+1).fill([]).map(()=>Array(n+1).fill(0))
+  function helper(str1, str2, m, n, memo = table){
+      if(m===0 || n===0) return 0;
+      if(memo[m][n]) return memo[m][n]
+      if(str1[m-1] === str2[n-1]){
+        memo[m][n] = 1 +  helper(str1, str2, m-1, n-1, memo);
+      } else {
+          memo[m][n] = Math.max(helper(text1, text2, m-1, n, memo), helper(text1, text2, m, n-1, memo))
+      }
+      return memo[m][n]
+  }
+  return helper(text1, text2, m, n, table)
  }
 
  function longestCommonSubsequenceTab(text1, text2, m=text1.length, n=text2.length){
@@ -39,9 +51,8 @@
              }
          }
      }
-     console.log(table)
      return table[m][n]
  }
 
-let result = longestCommonSubsequenceTab('abc', 'bacd'); 
+let result = longestCommonSubsequenceMemo('aburieiodfjkaaaaaaaaaaaaaaa', 'baehilekrwufjiurhiffkljfdkdfiufdcaaaaaaaaaaaaaaaaa'); 
 console.log(result)
