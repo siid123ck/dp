@@ -25,10 +25,15 @@
  
  
  function longestCommonSubsequenceMemo(text1, text2, m=text1.length, n=text2.length){
-  let table = Array(m+1).fill([]).map(()=>Array(n+1).fill(0))
+  let table = Array(m+1).fill([]).map(()=>Array(n+1).fill(null))
+  for(let i=0; i<=m; i++){
+      for(let j=0; j<=n; j++){
+          if(i===0 || j===0) table[i][j] = 0;
+      }
+  }
   function helper(str1, str2, m, n, memo = table){
       if(m===0 || n===0) return 0;
-      if(memo[m][n]) return memo[m][n]
+      if(memo[m][n] !== null) return memo[m][n]
       if(str1[m-1] === str2[n-1]){
         memo[m][n] = 1 +  helper(str1, str2, m-1, n-1, memo);
       } else {
@@ -54,5 +59,6 @@
      return table[m][n]
  }
 
-let result = longestCommonSubsequenceMemo('aburieiodfjkaaaaaaaaaaaaaaa', 'baehilekrwufjiurhiffkljfdkdfiufdcaaaaaaaaaaaaaaaaa'); 
+let result = longestCommonSubsequenceMemo('aburieiodfjkaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'baehilekrwufjiurhiffkljfdkdfiufdcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'); 
+// let result = longestCommonSubsequenceMemo('abc', 'acb')
 console.log(result)
