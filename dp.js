@@ -27,5 +27,21 @@
      return memo[key]
  }
 
-let result = longestCommonSubsequence('pqr', 'prp'); 
+ function longestCommonSubsequenceTab(text1, text2, m=text1.length, n=text2.length){
+     let table = Array(m+1).fill([]).map(()=>Array(n+1).fill(0))
+     for(let i=1; i<=m; i++){
+         for(let j=1; j<=n; j++){
+             if(text1[i-1]===text2[j-1]){
+                console.log(table)
+                 table[i][j] = 1 + table[i-1][j-1]; 
+             } else{
+                 table[i][j] = Math.max(table[i-1][j], table[i][j-1])
+             }
+         }
+     }
+     console.log(table)
+     return table[m][n]
+ }
+
+let result = longestCommonSubsequenceTab('abc', 'bacd'); 
 console.log(result)
