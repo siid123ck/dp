@@ -1,12 +1,18 @@
-function mcm(arr, left=1, right=arr.length-1){
-    if(left >= right) return 0; 
-    let max = Infinity, temp; 
-    for(let k=left; k<right; k++){
-        temp = mcm(arr, left, k) + mcm(arr, k+1, right) + (arr[left-1] * arr[k] * arr[right]);
-        max = Math.min(max, temp)
+function mcmMem0(arr, left, right){
+    let table= Array(arr.length).fill(0).map(()=>Array(arr.length).fill(Infinity))
+    function mcm(arr, left=1, right=arr.length-1, memo=table){
+        if(left >= right) return 0; 
+        if(memo[left][right] !==Infinity) return memo[left][right]
+        let temp; 
+        for(let k=left; k<right; k++){
+            temp = mcm(arr, left, k) + mcm(arr, k+1, right) + (arr[left-1] * arr[k] * arr[right]);
+            // max = Math.min(max, temp)
+            table[left][right] = Math.min(temp, table[left][right]);
+        }
+    
+        return table[left][right];
     }
-
-    return max;
+   return mcm(arr, left, right)
 }
 
 function mcmTab(arr, n=arr.length){
@@ -30,9 +36,8 @@ function mcmTab(arr, n=arr.length){
         }
     }
 
-    console.log(table)
     return table[1][n-1]
 }
 
-let result = mcm([10, 40, 50, 60]);
+let result = mcmTab([10, 15, 30, 50, 34, 532, 545, 5323, 1341]);
 console.log(result)
